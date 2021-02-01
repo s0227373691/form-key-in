@@ -16734,7 +16734,48 @@
             'use strict';
             var e = n(7294);
             const t = function () {
-                return e.createElement('div', null, 'App');
+                return e.createElement(
+                    'form',
+                    null,
+                    e.createElement('input', {
+                        type: 'text',
+                        placeholder: '關懷編號',
+                    }),
+                    e.createElement('input', {
+                        type: 'text',
+                        placeholder: '服務日期',
+                    }),
+                    e.createElement('input', {
+                        type: 'text',
+                        placeholder: '服務時間',
+                    }),
+                    e.createElement('input', {
+                        type: 'text',
+                        placeholder: '姓名',
+                    }),
+                    e.createElement(
+                        'select',
+                        { name: '', id: '' },
+                        e.createElement('option', { value: '' }, '男'),
+                        e.createElement('option', { value: '' }, '女')
+                    ),
+                    e.createElement('input', {
+                        type: 'text',
+                        placeholder: '出生日期',
+                    }),
+                    e.createElement('input', {
+                        type: 'text',
+                        placeholder: '連絡電話',
+                    }),
+                    e.createElement('input', {
+                        type: 'text',
+                        placeholder: '服務內容',
+                    }),
+                    e.createElement('input', {
+                        type: 'text',
+                        placeholder: '服務狀態',
+                    })
+                );
             };
             n(3935).render(
                 e.createElement(e.StrictMode, null, e.createElement(t, null)),
