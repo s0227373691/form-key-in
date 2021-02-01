@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./server/server.js",
+    "start": "node ./server/server.js",
+    "dev": "nodemon ./server/server.js",
     "build": "webpack --mode production",
     "build-w": "webpack --mode production --watch",
     "prettier": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
