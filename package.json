@@ -1,0 +1,30 @@
+{
+  "name": "form-key-in",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./server/server.js",
+    "build": "webpack --mode production",
+    "build-w": "webpack --mode production --watch",
+    "prettier": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s0227373691/form-key-in.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/s0227373691/form-key-in/issues"
+  },
+  "homepage": "https://github.com/s0227373691/form-key-in#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.11.14",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.1"
+  }
+}
