@@ -4,14 +4,21 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const App = () => {
+    const now = new Date()
+    const yyyy = now.getFullYear()
+    let mm = now.getMonth()+1
+    if(mm<10) mm = `0${mm}`
+    let dd = now.getDate()
+    if(dd<10) dd = `0${dd}`
     const [id, setId] = useState(''); // 關懷編號
-    const [serviceDate, setServiceDate] = useState(''); // 服務日期
+    const [serviceDate, setServiceDate] = useState(`${yyyy}-${mm}-${dd}`); // 服務日期
     const [serviceTime, setServiceTime] = useState(''); // 服務時間
+    const [gender, setGender] = useState(''); // 性別
     const [name, setName] = useState(''); // 姓名
     const [birthday, setBirthday] = useState(''); // 出生日期
     const [phone, setpPhone] = useState(''); // 連絡電話
     const [serviceStatus, setServiceStatus] = useState(''); // 服務狀態
-    const [serviceContent, setServiceContent] = useState(''); // 服務內容
+    const [serviceContent, setServiceContent] = useState(null); // 服務內容
     const [livingArea, setLivingArea] = useState(''); //居住區域
     const [caseFamilySubsidy, setCaseFamilySubsidy] = useState(''); //案家補助身分別
     const [employmentSituation, setEmploymentSituation] = useState(''); //就業情形
@@ -25,28 +32,76 @@ const App = () => {
     const [ageGroup, setAgeGroup] = useState(''); //年齡層
     const [serviceObjectSource, setServiceObjectSource] = useState(''); //服務對象來源
 
+
+    const handleChangeIdNumber = async e => {
+        const inputValue = e.target.value
+        setIdNumber(inputValue)
+
+
+        const data = await axios
+            .post('/api/form/search', {idNumber: inputValue})
+            .then(res => res.data)
+            .catch((err) => console.error(err));
+
+        if(data.result) {
+            console.log(data.data)
+            let {data:{
+                gender,
+                name,
+                birthday,
+                phone,
+                domicileaddress,
+                contactPersonName
+            }} = data
+
+            birthday = birthday.substring(0,10)
+            setGender(gender)
+            setName(name)
+            setBirthday(birthday)
+            setpPhone(phone)
+            setDomicileaddress(domicileaddress)
+            setContactPersonName(contactPersonName)
+        }
+            
+
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const dt = {
+        if(gender === '') return alert('請輸入性別')
+
+        const formValue = {
             id,
             serviceDate,
             serviceTime,
+            gender,
             name,
             birthday,
             phone,
             serviceStatus,
             serviceContent,
+            livingArea,
+            caseFamilySubsidy,
+            employmentSituation,
+            causeOfFailure,
+            domicileaddress,
+            idNumber,
+            oldSystemCategory,
+            contactPersonName,
+            obstacleCategory,
+            barrierLevel,
+            ageGroup,
+            serviceObjectSource,
         };
 
         axios
-            .post('/api/form', dt)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => console.error(err));
+            .post('/api/form', formValue)
+            .then((res) => alert('新增成功'))
+            .catch((err) =>{ 
+                alert('新增失敗')
+                console.error(err)});
 
-        console.log('handleSubmit');
     };
     return (
         <Form onSubmit={handleSubmit}>
@@ -77,12 +132,20 @@ const App = () => {
                     onChange={(e) => setServiceTime(e.target.value)}
                 />
             </FormItem>
+            <hr/>
+            <FormItem>
+                <Label>身分證字號</Label>
+                <Input value={idNumber} onChange={handleChangeIdNumber} required />
+            </FormItem>
             <FormItem>
                 <Label>性別</Label>
-                <Select required>
+                <Select 
+                value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    >
                     <option hidden>請選擇</option>
-                    <option value="male">男</option>
-                    <option value="female">女</option>
+                    <option value="男">男</option>
+                    <option value="女">女</option>
                 </Select>
             </FormItem>
             <FormItem>
@@ -119,13 +182,17 @@ const App = () => {
                 <Label>戶籍住址</Label>
                 <Input value={domicileaddress} onChange={e => setDomicileaddress(e.target.value)} required />
             </FormItem>
+            <FormItem>
+                <Label>聯絡人姓名</Label>
+                <Input value={contactPersonName} onChange={e => setContactPersonName(e.target.value)} />
+            </FormItem>
             <hr />
             <FormItem>
                 <Label>服務內容</Label>
                 <Select
                     value={serviceContent}
                     onChange={(e) => setServiceContent(e.target.value)}
-                    required
+                    
                 >
                     <option hidden>請選擇</option>
                     <option value="電話評估">電話評估</option>
@@ -226,16 +293,8 @@ const App = () => {
                 </Select>
             </FormItem>
             <FormItem>
-                <Label>身分證字號</Label>
-                <Input value={idNumber} onChange={e => setIdNumber(e.target.value)} />
-            </FormItem>
-            <FormItem>
                 <Label>舊制類別</Label>
                 <Input value={oldSystemCategory} onChange={e => setOldSystemCategory(e.target.value)} />
-            </FormItem>
-            <FormItem>
-                <Label>聯絡人姓名</Label>
-                <Input value={contactPersonName} onChange={e => setContactPersonName(e.target.value)} />
             </FormItem>
             <FormItem>
                 <Label>障礙類別</Label>
